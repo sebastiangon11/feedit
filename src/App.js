@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        console.log(`user`, user);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    getUser();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Feed.it</p>
         <SignUpForm />
+        <ConfirmSignUp />
         <LoginForm />
         <SignOut />
       </header>
@@ -94,7 +107,7 @@ const LoginForm = () => {
   );
 };
 
-export const SignOut = () => {
+const SignOut = () => {
   const handleLogout = async () => {
     try {
       await Auth.signOut();
@@ -103,6 +116,47 @@ export const SignOut = () => {
     }
   };
   return <button onClick={handleLogout}>Sign out</button>;
+};
+
+export const ConfirmSignUp = () => {
+  const [username, setUsername] = useState("");
+  const [code, setCode] = useState("");
+
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    try {
+      await Auth.confirmSignUp(username, code);
+    } catch (error) {
+      console.log("error confirming sign up", error);
+    }
+  };
+
+  const resendConfirmationCode = async () => {
+    try {
+      await Auth.resendSignUp(username);
+      console.log("code resent successfully");
+    } catch (err) {
+      console.log("error resending code: ", err);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Confirm SignUp</h2>
+      <form onSubmit={handleConfirm}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input value={code} onChange={(e) => setCode(e.target.value)} />
+        <button onClick={resendConfirmationCode}>
+          Resend confirmation code
+        </button>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
 };
 
 export default App;

@@ -32,6 +32,12 @@ function App() {
 // eslint-disable-next-line import/first
 import { Auth } from "aws-amplify";
 
+const FormContainer = ({ children }) => (
+  <div className="p-6 max-w-md mx-auto bg-black rounded-xl shadow-md flex items-center space-x-4">
+    {children}
+  </div>
+);
+
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
   const [password, setpPassword] = useState("");
@@ -54,7 +60,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
+    <FormContainer>
       <h2>Sign Up</h2>
       <form onSubmit={handleFormSubmit}>
         <input
@@ -69,7 +75,7 @@ const SignUpForm = () => {
         />
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </FormContainer>
   );
 };
 
@@ -88,7 +94,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <FormContainer>
       <h2>Login</h2>
       <form onSubmit={handleFormSubmit}>
         <input
@@ -103,7 +109,7 @@ const LoginForm = () => {
         />
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </FormContainer>
   );
 };
 
@@ -141,7 +147,7 @@ export const ConfirmSignUp = () => {
   };
 
   return (
-    <div>
+    <FormContainer>
       <h2>Confirm SignUp</h2>
       <form onSubmit={handleConfirm}>
         <input
@@ -155,7 +161,7 @@ export const ConfirmSignUp = () => {
         </button>
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </FormContainer>
   );
 };
 

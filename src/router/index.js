@@ -7,13 +7,12 @@ import { ROUTES } from "./routes";
 export const Nav = () => (
   <nav className="flex justify-between items-center px-1 bg-gray-800 px-3 py-3 shadow-xl ring-2">
     <div>
-      <h1 className="text-indigo-200 text-xl">
+      <NavLink to={ROUTES.FEED.path} className="text-indigo-200 text-xl">
         Feed
         <span className="rounded bg-indigo-900 ml-0.5 px-2 py-0.5">it</span>
-      </h1>
+      </NavLink>
     </div>
     <div className="space-x-4">
-      <NavLink to={ROUTES.HOME.path}>{ROUTES.HOME.name}</NavLink>
       <NavLink to={ROUTES.ENROLL.path}>{ROUTES.ENROLL.name}</NavLink>
     </div>
   </nav>

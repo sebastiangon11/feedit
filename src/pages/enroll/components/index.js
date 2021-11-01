@@ -12,7 +12,11 @@ export const FormContainer = ({ children, ...props }) => (
 );
 
 const FormInput = ({ ...props }) => (
-  <input {...props} className="bg-gray-900 px-2 py-3 rounded bg-opacity-40" />
+  <input
+    {...props}
+    // className="bg-gray-900 px-2 py-3 rounded border-l-2 bg-opacity-40 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-inset"
+    className="bg-gray-900 px-2 py-3 rounded border-l-2 bg-opacity-40 transition-colors ease-in-out duration-400 focus:border-indigo-500"
+  />
 );
 
 export const SignUpForm = () => {

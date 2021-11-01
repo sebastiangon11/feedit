@@ -22,3 +22,6 @@ h1 {
 button {
   -webkit-tap-highlight-color: transparent; /* for removing the highlight */
 }
+input:focus-visible {
+  outline: none;
+}

@@ -1,7 +1,7 @@
 export const ROUTES = {
-  HOME: {
-    path: "/home",
-    name: "Home",
+  FEED: {
+    path: "/feed",
+    name: "Feed",
   },
   ENROLL: {
     path: "/enroll",

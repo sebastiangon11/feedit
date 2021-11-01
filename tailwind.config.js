@@ -5,7 +5,14 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ["active"],
+      textColor: ["active"],
+      inset: ["active"],
+      ringColor: ["active"],
+      ringWidth: ["active"],
+    },
   },
   plugins: [],
+  // mode: "jit",
 };

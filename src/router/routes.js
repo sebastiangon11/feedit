@@ -3,8 +3,12 @@ export const ROUTES = {
     path: "/feed",
     name: "Feed",
   },
-  ENROLL: {
-    path: "/enroll",
-    name: "Log in / Register",
+  REGISTER: {
+    path: "/register",
+    name: "Register",
+  },
+  LOGIN: {
+    path: "/login",
+    name: "Log in",
   },
 };

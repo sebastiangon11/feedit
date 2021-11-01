@@ -1,1 +1,1 @@
-export { Enroll } from "./enroll/Enroll";
+export { Auth } from "./auth/Auth";

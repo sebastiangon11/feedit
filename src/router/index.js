@@ -1,22 +1,36 @@
+import { useAuth } from "App";
+import { Logout } from "pages/auth/components";
 import { Route, NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
 import "./Router.css";
 import { ROUTES } from "./routes";
 
-export const Nav = () => (
-  <nav className="flex justify-between items-center px-1 bg-gray-800 px-3 py-3 shadow-xl ring-2">
-    <div>
-      <NavLink to={ROUTES.FEED.path} className="text-indigo-200 text-xl">
-        Feed
-        <span className="rounded bg-indigo-900 ml-0.5 px-2 py-0.5">it</span>
-      </NavLink>
-    </div>
-    <div className="space-x-4">
-      <NavLink to={ROUTES.ENROLL.path}>{ROUTES.ENROLL.name}</NavLink>
-    </div>
-  </nav>
-);
+export const Nav = () => {
+  const { user } = useAuth();
+
+  return (
+    <nav className="flex justify-between items-center px-1 bg-gray-800 px-3 py-3 shadow-xl ring-2">
+      <div>
+        <NavLink to={ROUTES.FEED.path} className="text-white text-xl">
+          Feed
+          <span className="rounded font-semibold bg-indigo-900 ml-0.5 px-2 py-0.5">
+            it
+          </span>
+        </NavLink>
+      </div>
+      {user ? (
+        <Logout />
+      ) : (
+        <div className="space-x-4">
+          <NavLink to={ROUTES.REGISTER.path}>
+            {ROUTES.REGISTER.name} / {ROUTES.LOGIN.name}
+          </NavLink>
+        </div>
+      )}
+    </nav>
+  );
+};
 
 export const AnimatedRoute = ({ children, ...props }) => {
   return (

@@ -1,4 +1,4 @@
-import { useAuth } from "App";
+import { useAuth } from "contexts/auth";
 import { Logout } from "pages/auth/components";
 import { Route, NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";

@@ -11,6 +11,7 @@ module.exports = {
       inset: ["active"],
       ringColor: ["active"],
       ringWidth: ["active"],
+      opacity: ["disabled"],
     },
   },
   plugins: [],

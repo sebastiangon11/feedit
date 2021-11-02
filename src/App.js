@@ -1,68 +1,55 @@
-import { Auth } from "aws-amplify";
-import React, { useEffect } from "react";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
-import { Nav, AnimatedRoute, AnimatedRoutes } from "./router";
+import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { Auth as AuthRouter } from "@pages";
+import { AuthProvider, useAuth } from "@contexts/auth";
+
 import { ROUTES } from "router/routes";
+import { Nav, AnimatedRoute, AnimatedRoutes } from "./router";
 
-const AuthContext = React.createContext();
-
-export const useAuth = () => {
-  return React.useContext(AuthContext);
-};
-
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = React.useState(null);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const currentUser = await Auth.currentAuthenticatedUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.log("error", error);
-        setUser(null);
-      }
-    };
-
-    getUser();
-  }, []);
-
-  const value = React.useMemo(() => ({ user, setUser }));
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <AuthProvider>
-      <MainRouter />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <MainRouter />
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
 const MainRouter = () => {
   const { user } = useAuth();
 
+  console.log(`user`, user);
+
   return (
     <BrowserRouter>
       <Nav />
-      {user ? null : (
-        <AnimatedRoutes>
-          <AnimatedRoute path={ROUTES.FEED.path}>
-            <div className="m-4 p-4 border-2 rounded-xl border-opacity-80 w-11/12 mx-auto bg-indigo-900 bg-opacity-10">
-              <p className="p-32">{ROUTES.FEED.name}</p>
-            </div>
-          </AnimatedRoute>
+      <AnimatedRoutes>
+        <AnimatedRoute path={ROUTES.FEED.path}>Feed</AnimatedRoute>
+        {user ? null : (
           <AnimatedRoute path={[ROUTES.REGISTER.path, ROUTES.LOGIN.path]}>
             <AuthRouter />
           </AnimatedRoute>
-        </AnimatedRoutes>
-      )}
-      <Route path="/">
-        <Redirect to={ROUTES.FEED.path} />
-      </Route>
+        )}
+      </AnimatedRoutes>
     </BrowserRouter>
   );
 };

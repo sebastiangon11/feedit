@@ -4,6 +4,7 @@ import { Form, Input, Submit } from "./Form";
 import { toast } from "react-toastify";
 import { useHistory, useLocation } from "react-router";
 import { ROUTES } from "router/routes";
+import { useMutation } from "react-query";
 
 export const ConfirmRegisterForm = () => {
   const history = useHistory();
@@ -12,15 +13,22 @@ export const ConfirmRegisterForm = () => {
   const [email, setEmail] = useState(location.state?.email);
   const [code, setCode] = useState("");
 
+  const confirmMutation = useMutation(
+    ["confirmEmail"],
+    () => confirmEmail(email, code),
+    {
+      onSuccess: (user) => {
+        history.push(ROUTES.LOGIN.path);
+      },
+      onError: (error) => {
+        toast.error("error confirming sign up", error);
+      },
+    }
+  );
+
   const handleConfirm = async (e) => {
     e.preventDefault();
-    try {
-      await confirmEmail(email, code);
-      debugger;
-      history.push(ROUTES.LOGIN.path);
-    } catch (error) {
-      toast.error("error confirming sign up", error);
-    }
+    confirmMutation.mutate();
   };
 
   const handleResend = async () => {
@@ -40,6 +48,7 @@ export const ConfirmRegisterForm = () => {
         <Input
           id="email"
           type="email"
+          disabled
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -55,7 +64,7 @@ export const ConfirmRegisterForm = () => {
       <button className="underline" onClick={handleResend}>
         Resend confirmation code
       </button>
-      <Submit>Submit</Submit>
+      <Submit busy={confirmMutation.isLoading}>Submit</Submit>
     </Form>
   );
 };

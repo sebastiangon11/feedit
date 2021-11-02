@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }) => {
       username: email,
       password,
     });
-    // setUser(user);
     return user;
   };
 
@@ -42,8 +41,20 @@ export const AuthProvider = ({ children }) => {
 
   const resendConfirmationCode = (email) => Auth.resendSignUp(email);
 
+  const logout = () => {
+    Auth.signOut();
+    setUser(null);
+  };
+
   const value = useMemo(
-    () => ({ user, login, register, confirmEmail, resendConfirmationCode }),
+    () => ({
+      user,
+      login,
+      register,
+      confirmEmail,
+      resendConfirmationCode,
+      logout,
+    }),
     [user]
   );
 

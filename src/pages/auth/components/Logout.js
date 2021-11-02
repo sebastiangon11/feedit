@@ -1,13 +1,11 @@
-import { Auth } from "aws-amplify";
 import { useAuth } from "@contexts/auth";
 
 export const Logout = () => {
-  const { setUser } = useAuth();
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await Auth.signOut();
-      setUser(null);
+      await logout();
     } catch (error) {
       console.log("error signing out: ", error);
     }

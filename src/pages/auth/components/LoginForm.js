@@ -12,19 +12,23 @@ export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setpPassword] = useState("");
 
-  const signInMutation = useMutation(["singIn"], () => login(email, password), {
+  const loginMutation = useMutation(["logIn"], () => login(email, password), {
     onSuccess: (user) => {
       toast.success(`Welcome ${user.attributes.email}!`);
       history.push(ROUTES.FEED.path);
     },
     onError: (error) => {
-      toast.error(error.message);
+      if (error.code === "UserNotConfirmedException") {
+        history.push(ROUTES.REGISTER_CONFIRM.path, { email });
+      } else {
+        toast.error(error.message);
+      }
     },
   });
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    signInMutation.mutate();
+    loginMutation.mutate();
   };
 
   return (
@@ -48,7 +52,7 @@ export const LoginForm = () => {
           onChange={(e) => setpPassword(e.target.value)}
         />
       </div>
-      <Submit busy={signInMutation.isLoading}>Submit</Submit>
+      <Submit busy={loginMutation.isLoading}>Submit</Submit>
       <p className="text-gray-400">
         Don’t have an account?{" "}
         <Link className="underline text-gray-300" to={ROUTES.REGISTER.path}>

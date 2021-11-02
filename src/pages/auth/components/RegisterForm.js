@@ -4,6 +4,7 @@ import { ROUTES } from "router/routes";
 import { useAuth } from "@contexts/auth";
 import { Form, Input, Submit } from "./Form";
 import { toast } from "react-toastify";
+import { useMutation } from "react-query";
 
 export const RegisterForm = () => {
   const history = useHistory();
@@ -11,16 +12,23 @@ export const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const user = await register(email, password);
-      toast.success(`Welcome ${user.username}!`);
-      history.push(`${ROUTES.REGISTER.path}/confirm`, { email });
-    } catch (error) {
-      console.log("error signing up:", error);
-      toast.error(error.message);
+  const registerMutation = useMutation(
+    ["register"],
+    () => register(email, password),
+    {
+      onSuccess: (user) => {
+        toast.success(`Welcome ${user.username}!`);
+        history.push(ROUTES.REGISTER_CONFIRM.path, { email });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     }
+  );
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    registerMutation.mutate();
   };
 
   return (
@@ -46,7 +54,7 @@ export const RegisterForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <Submit>Submit</Submit>
+      <Submit busy={registerMutation.isLoading}>Submit</Submit>
       <p className="text-gray-400">
         Already have an account?{" "}
         <Link className="underline text-gray-300" to={ROUTES.LOGIN.path}>

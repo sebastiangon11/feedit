@@ -1,22 +1,35 @@
-import { Auth } from "aws-amplify";
+import { Auth as AmplifyAuth } from "aws-amplify";
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }) => {
+const Authenticated = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : null;
+};
+const Unauthenticated = ({ children }) => {
+  const { user } = useAuth();
+  return user ? null : children;
+};
+
+const Auth = { Authenticated, Unauthenticated };
+
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
       try {
-        const currentUser = await Auth.currentAuthenticatedUser();
+        const currentUser = await AmplifyAuth.currentAuthenticatedUser();
+        console.log(`Authenticated user data`, currentUser);
         setUser(currentUser);
       } catch (error) {
-        console.log("error", error);
+        toast.error(error.message);
       }
     };
 
@@ -24,32 +37,32 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const user = await Auth.signIn(email, password);
+    const user = await AmplifyAuth.signIn(email, password);
     setUser(user);
     return user;
   };
 
   const register = async (email, password) => {
-    const { user } = await Auth.signUp({
+    const { user } = await AmplifyAuth.signUp({
       username: email,
       password,
     });
     return user;
   };
 
-  const confirmEmail = (email, code) => Auth.confirmSignUp(email, code);
+  const confirmEmail = (email, code) => AmplifyAuth.confirmSignUp(email, code);
 
-  const resendConfirmationCode = (email) => Auth.resendSignUp(email);
+  const resendConfirmationCode = (email) => AmplifyAuth.resendSignUp(email);
 
   const logout = () => {
-    Auth.signOut();
+    AmplifyAuth.signOut();
     setUser(null);
   };
 
   const updateUserAttrs = async (customAttrs = {}) => {
     if (Object.keys(customAttrs).length === 0) return;
 
-    const user = await Auth.currentAuthenticatedUser();
+    const user = await AmplifyAuth.currentAuthenticatedUser();
 
     const newCustomAttrs = Object.fromEntries(
       Object.entries(customAttrs).map((entry) => [
@@ -63,19 +76,19 @@ export const AuthProvider = ({ children }) => {
       ...newCustomAttrs,
     };
 
-    await Auth.updateUserAttributes(user, mergedAttrs);
+    await AmplifyAuth.updateUserAttributes(user, mergedAttrs);
   };
 
   const deleteUserAttrs = async (attrs = {}) => {
     if (Object.keys(attrs).length === 0) return;
 
-    const user = await Auth.currentAuthenticatedUser();
+    const user = await AmplifyAuth.currentAuthenticatedUser();
 
     const attrsToDelete = Object.fromEntries(
       Object.entries(attrs).map((entry) => [[`custom:${entry[0]}`], entry[1]])
     );
 
-    await Auth.deleteUserAttributes(user, attrsToDelete);
+    await AmplifyAuth.deleteUserAttributes(user, attrsToDelete);
   };
 
   const value = useMemo(
@@ -94,3 +107,5 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+export { AuthProvider, useAuth, Auth };

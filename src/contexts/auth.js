@@ -46,6 +46,38 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateUserAttrs = async (customAttrs = {}) => {
+    if (Object.keys(customAttrs).length === 0) return;
+
+    const user = await Auth.currentAuthenticatedUser();
+
+    const newCustomAttrs = Object.fromEntries(
+      Object.entries(customAttrs).map((entry) => [
+        [`custom:${entry[0]}`],
+        entry[1],
+      ])
+    );
+
+    const mergedAttrs = {
+      ...user.attributes,
+      ...newCustomAttrs,
+    };
+
+    await Auth.updateUserAttributes(user, mergedAttrs);
+  };
+
+  const deleteUserAttrs = async (attrs = {}) => {
+    if (Object.keys(attrs).length === 0) return;
+
+    const user = await Auth.currentAuthenticatedUser();
+
+    const attrsToDelete = Object.fromEntries(
+      Object.entries(attrs).map((entry) => [[`custom:${entry[0]}`], entry[1]])
+    );
+
+    await Auth.deleteUserAttributes(user, attrsToDelete);
+  };
+
   const value = useMemo(
     () => ({
       user,
@@ -54,6 +86,8 @@ export const AuthProvider = ({ children }) => {
       confirmEmail,
       resendConfirmationCode,
       logout,
+      updateUserAttrs,
+      deleteUserAttrs,
     }),
     [user]
   );

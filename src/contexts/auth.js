@@ -36,16 +36,17 @@ const AuthProvider = ({ children }) => {
     getUser();
   }, []);
 
-  const login = async (email, password) => {
-    const user = await AmplifyAuth.signIn(email, password);
+  const login = async (username, password) => {
+    const user = await AmplifyAuth.signIn(username, password);
     setUser(user);
     return user;
   };
 
-  const register = async (email, password) => {
+  const register = async (username, email, password) => {
     const { user } = await AmplifyAuth.signUp({
-      username: email,
+      username,
       password,
+      attributes: { email, picture: "" },
     });
     return user;
   };

@@ -9,22 +9,26 @@ import { useMutation } from "react-query";
 export const LoginForm = () => {
   const history = useHistory();
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setpPassword] = useState("");
 
-  const loginMutation = useMutation(["logIn"], () => login(email, password), {
-    onSuccess: (user) => {
-      toast.success(`Welcome ${user.attributes.email}!`);
-      history.push(ROUTES.FEED.path);
-    },
-    onError: (error) => {
-      if (error.code === "UserNotConfirmedException") {
-        history.push(ROUTES.REGISTER_CONFIRM.path, { email });
-      } else {
-        toast.error(error.message);
-      }
-    },
-  });
+  const loginMutation = useMutation(
+    ["logIn"],
+    () => login(username, password),
+    {
+      onSuccess: (user) => {
+        toast.success(`Welcome ${user.attributes.username}!`);
+        history.push(ROUTES.FEED.path);
+      },
+      onError: (error) => {
+        if (error.code === "UserNotConfirmedException") {
+          history.push(ROUTES.REGISTER_CONFIRM.path, { username });
+        } else {
+          toast.error(error.message);
+        }
+      },
+    }
+  );
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -35,12 +39,12 @@ export const LoginForm = () => {
     <Form onSubmit={handleFormSubmit}>
       <h1>Log in</h1>
       <div className="flex flex-col space-y-2">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="username">Username</label>
         <Input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
       <div className="flex flex-col space-y-2">

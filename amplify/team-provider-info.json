@@ -13,7 +13,13 @@
     },
     "categories": {
       "auth": {
-        "feedit": {}
+        "feedit": {
+          "userPoolId": "us-east-1_RKBqLFkNV",
+          "userPoolName": "feedit-staging",
+          "webClientId": "8hhf9n2hspfss69a8ih9u3gm3",
+          "nativeClientId": "8hhf9n2hspfss69a8ih9u3gm3"
+        },
+        "feedit1972e6ea": {}
       }
     }
   }

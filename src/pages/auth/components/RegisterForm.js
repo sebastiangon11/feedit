@@ -9,16 +9,18 @@ import { useMutation } from "react-query";
 export const RegisterForm = () => {
   const history = useHistory();
   const { register } = useAuth();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const registerMutation = useMutation(
     ["register"],
-    () => register(email, password),
+    () => register(username, email, password),
     {
       onSuccess: (user) => {
         toast.success(`Welcome ${user.username}!`);
-        history.push(ROUTES.REGISTER_CONFIRM.path, { email });
+        history.push(ROUTES.REGISTER_CONFIRM.path, { username });
       },
       onError: (error) => {
         toast.error(error.message);
@@ -34,6 +36,16 @@ export const RegisterForm = () => {
   return (
     <Form onSubmit={handleFormSubmit}>
       <h1>Register</h1>
+      <div className="flex flex-col space-y-2">
+        <label htmlFor="username">Username</label>
+        <Input
+          required
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="email">Email</label>
         <Input
@@ -52,6 +64,15 @@ export const RegisterForm = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col space-y-2">
+        <label htmlFor="password-confirm">Confirm password</label>
+        <Input
+          id="password-confirm"
+          type="password"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
         />
       </div>
       <Submit busy={registerMutation.isLoading}>Submit</Submit>

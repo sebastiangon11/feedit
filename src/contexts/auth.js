@@ -1,4 +1,5 @@
-import { Auth as AmplifyAuth } from "aws-amplify";
+/* eslint-disable default-case */
+import { Auth as AmplifyAuth, Hub } from "aws-amplify";
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 
@@ -23,6 +24,24 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const authListener = (data) => {
+      switch (data.payload.event) {
+        case "signIn":
+          setUser(data.payload.event);
+          break;
+        case "signOut":
+          console.log("user signed out", data.payload.data);
+          setUser(null);
+          break;
+      }
+    };
+
+    Hub.listen("auth", authListener);
+
+    return () => Hub.remove("auth", authListener);
+  }, []);
+
+  useEffect(() => {
     const getUser = async () => {
       try {
         const currentUser = await AmplifyAuth.currentAuthenticatedUser();
@@ -36,11 +55,7 @@ const AuthProvider = ({ children }) => {
     getUser();
   }, []);
 
-  const login = async (username, password) => {
-    const user = await AmplifyAuth.signIn(username, password);
-    setUser(user);
-    return user;
-  };
+  const login = (username, password) => AmplifyAuth.signIn(username, password);
 
   const register = async (username, email, password) => {
     const { user } = await AmplifyAuth.signUp({
@@ -55,10 +70,7 @@ const AuthProvider = ({ children }) => {
 
   const resendConfirmationCode = (email) => AmplifyAuth.resendSignUp(email);
 
-  const logout = () => {
-    AmplifyAuth.signOut();
-    setUser(null);
-  };
+  const logout = () => AmplifyAuth.signOut();
 
   const updateUserAttrs = async (customAttrs = {}) => {
     if (Object.keys(customAttrs).length === 0) return;

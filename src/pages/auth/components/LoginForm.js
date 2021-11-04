@@ -17,7 +17,7 @@ export const LoginForm = () => {
     () => login(username, password),
     {
       onSuccess: (user) => {
-        toast.success(`Welcome ${user.attributes.username}!`);
+        toast.success(`Welcome ${user.username}!`);
         history.push(ROUTES.FEED.path);
       },
       onError: (error) => {

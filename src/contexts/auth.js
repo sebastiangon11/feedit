@@ -71,8 +71,8 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => AmplifyAuth.signOut();
 
-  const updateUserAttrs = async (customAttrs = {}) => {
-    if (Object.keys(customAttrs).length === 0) return;
+  const updateUserAttrs = async (attrs = {}, customAttrs = {}) => {
+    if (attrs.length === 0 && Object.keys(customAttrs).length === 0) return;
 
     const user = await AmplifyAuth.currentAuthenticatedUser();
 
@@ -85,14 +85,18 @@ const AuthProvider = ({ children }) => {
 
     const mergedAttrs = {
       ...user.attributes,
+      ...attrs,
       ...newCustomAttrs,
     };
 
+    debugger;
     await AmplifyAuth.updateUserAttributes(user, mergedAttrs);
   };
 
-  const deleteUserAttrs = async (attrs = {}) => {
-    if (Object.keys(attrs).length === 0) return;
+  window.update = updateUserAttrs;
+
+  const deleteUserAttrs = async (attrs = {}, customAttrs = {}) => {
+    if (attrs.length === 0 && Object.keys(customAttrs).length === 0) return;
 
     const user = await AmplifyAuth.currentAuthenticatedUser();
 
@@ -100,7 +104,10 @@ const AuthProvider = ({ children }) => {
       Object.entries(attrs).map((entry) => [[`custom:${entry[0]}`], entry[1]])
     );
 
-    await AmplifyAuth.deleteUserAttributes(user, attrsToDelete);
+    await AmplifyAuth.deleteUserAttributes(user, {
+      ...attrs,
+      ...attrsToDelete,
+    });
   };
 
   const value = useMemo(

@@ -30,7 +30,6 @@ const AuthProvider = ({ children }) => {
           setUser(data.payload.event);
           break;
         case "signOut":
-          console.log("user signed out", data.payload.data);
           setUser(null);
           break;
       }

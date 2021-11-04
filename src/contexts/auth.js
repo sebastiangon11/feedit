@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
     const authListener = (data) => {
       switch (data.payload.event) {
         case "signIn":
-          setUser(data.payload.event);
+          setUser(data.payload.data);
           break;
         case "signOut":
           setUser(null);
@@ -89,7 +89,6 @@ const AuthProvider = ({ children }) => {
       ...newCustomAttrs,
     };
 
-    debugger;
     await AmplifyAuth.updateUserAttributes(user, mergedAttrs);
   };
 

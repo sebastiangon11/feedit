@@ -1,4 +1,4 @@
-import { useAuth } from "contexts/auth";
+import { Auth } from "contexts/auth";
 import { Logout } from "pages/auth/components";
 import { Route, NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
@@ -7,8 +7,6 @@ import "./Router.css";
 import { ROUTES } from "./routes";
 
 export const Nav = () => {
-  const { user } = useAuth();
-
   return (
     <nav className="flex justify-between items-center px-1 bg-gray-800 px-3 py-3 shadow-xl ring-2">
       <div>
@@ -19,15 +17,16 @@ export const Nav = () => {
           </span>
         </NavLink>
       </div>
-      {user ? (
+      <Auth.Authenticated>
         <Logout />
-      ) : (
+      </Auth.Authenticated>
+      <Auth.Unauthenticated>
         <div className="space-x-4">
           <NavLink to={ROUTES.REGISTER.path}>
             {ROUTES.REGISTER.name} / {ROUTES.LOGIN.name}
           </NavLink>
         </div>
-      )}
+      </Auth.Unauthenticated>
     </nav>
   );
 };

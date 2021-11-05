@@ -7,10 +7,10 @@ export const Form = ({ children, ...props }) => (
   </form>
 );
 
-export const Input = ({ ...props }) => (
+export const Input = ({ className, ...props }) => (
   <input
     {...props}
-    className="bg-gray-900 px-2 py-3 rounded border-l-2 bg-opacity-40 transition-colors ease-in-out duration-400 focus:border-indigo-500"
+    className={`bg-gray-900 px-2 py-3 rounded border-l-2 bg-opacity-40 transition-colors ease-in-out duration-400 focus:border-indigo-500 ${className}`}
   />
 );
 

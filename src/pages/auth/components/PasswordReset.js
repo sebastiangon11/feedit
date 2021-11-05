@@ -53,16 +53,16 @@ export const PasswordReset = () => {
 
   const sendVerificationCode = async (e) => {
     e.preventDefault();
-    if (password !== passwordConfirm) {
-      toast.error("Passwords does not match");
-    } else {
-      sendCodeMutation.mutate();
-    }
+    sendCodeMutation.mutate();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitNewPasswordMutation.mutate();
+    if (password !== passwordConfirm) {
+      toast.error("Passwords does not match");
+    } else {
+      submitNewPasswordMutation.mutate();
+    }
   };
 
   return (
@@ -100,19 +100,25 @@ export const PasswordReset = () => {
           onChange={handleFormChange}
         />
       </div>
-      <div className="flex flex-col space-y-2">
+      <div className="flexflex-col space-y-2">
         <label htmlFor="code">Verification code</label>
-        <Input
-          id="code"
-          required
-          autoComplete="one-time-code"
-          value={code}
-          onChange={handleFormChange}
-        />
+        <div className="flex space-x-2 align-middle">
+          <Input
+            className="flex-1"
+            id="code"
+            required
+            autoComplete="one-time-code"
+            value={code}
+            onChange={handleFormChange}
+          />
+          <button
+            className="relative flex-shrink border rounded-md p-2 active:bg-gray-900 active:top-px active:ring-indigo-900 active:ring-2 disabled:opacity-50"
+            onClick={sendVerificationCode}
+          >
+            Get code
+          </button>
+        </div>
       </div>
-      <button className="underline" onClick={sendVerificationCode}>
-        Send verification code to my email
-      </button>
       <Submit busy={submitNewPasssword.isLoading}>Submit</Submit>
     </Form>
   );

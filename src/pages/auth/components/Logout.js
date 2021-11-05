@@ -15,7 +15,7 @@ export const Logout = () => {
     <div className="flex items-center	">
       <img
         src={user.attributes.picture}
-        className="w-10 h-10 rounded-full"
+        className="w-10 h-10 rounded-full shadow"
         alt={user.username}
       />
       <button

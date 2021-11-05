@@ -8,7 +8,7 @@ import { ROUTES } from "./routes";
 
 export const Nav = () => {
   return (
-    <nav className="flex justify-between items-center px-1 bg-gray-800 px-3 py-3 shadow-xl ring-2">
+    <nav className="flex justify-between items-center bg-gray-800 px-3 py-3 ring-2">
       <div>
         <NavLink to={ROUTES.FEED.path} className="text-white text-xl">
           Feed

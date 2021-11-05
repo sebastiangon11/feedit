@@ -109,6 +109,15 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const sendNewPasswordCode = (username) =>
+    AmplifyAuth.forgotPassword(username);
+
+  const submitNewPasssword = (username, code, newPassword) =>
+    AmplifyAuth.forgotPasswordSubmit(username, code, newPassword);
+
+  const changePassword = (username, oldPassword, newPassword) =>
+    AmplifyAuth.changePassword(username, oldPassword, newPassword);
+
   const value = useMemo(
     () => ({
       user,
@@ -117,6 +126,9 @@ const AuthProvider = ({ children }) => {
       confirmEmail,
       resendConfirmationCode,
       logout,
+      sendNewPasswordCode,
+      submitNewPasssword,
+      changePassword,
       updateUserAttrs,
       deleteUserAttrs,
     }),

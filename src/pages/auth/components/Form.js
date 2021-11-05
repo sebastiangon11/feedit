@@ -1,7 +1,7 @@
 export const Form = ({ children, ...props }) => (
   <form
     {...props}
-    className="max-w-xl mx-auto my-4 mx-3 p-4 rounded-xl border-opacity-80 bg-indigo-800 bg-opacity-10 space-y-6"
+    className="w-11/12 sm:w-auto sm:max-w-xl mx-auto my-4 p-4 rounded-xl border-opacity-80 bg-indigo-800 bg-opacity-10 space-y-6"
   >
     {children}
   </form>

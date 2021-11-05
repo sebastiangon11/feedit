@@ -18,8 +18,8 @@ export const RegisterForm = () => {
     ["register"],
     () => register(username, email, password),
     {
-      onSuccess: (user) => {
-        toast.success(`Welcome ${user.username}!`);
+      onSuccess: () => {
+        toast.success("A verification code was sent to your email address");
         history.push(ROUTES.REGISTER_CONFIRM.path, { username });
       },
       onError: (error) => {
@@ -30,7 +30,11 @@ export const RegisterForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    registerMutation.mutate();
+    if (password !== passwordConfirm) {
+      toast.error("Passwords does not match");
+    } else {
+      registerMutation.mutate();
+    }
   };
 
   return (
@@ -40,6 +44,8 @@ export const RegisterForm = () => {
         <label htmlFor="username">Username</label>
         <Input
           required
+          autoComplete="username"
+          autoCapitalize="none"
           id="username"
           type="text"
           value={username}
@@ -52,6 +58,7 @@ export const RegisterForm = () => {
           required
           id="email"
           type="email"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -62,6 +69,7 @@ export const RegisterForm = () => {
           required
           id="password"
           type="password"
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -71,6 +79,7 @@ export const RegisterForm = () => {
         <Input
           id="password-confirm"
           type="password"
+          autoComplete="new-password"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
         />

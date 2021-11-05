@@ -39,8 +39,9 @@ export const LoginForm = () => {
     <Form onSubmit={handleFormSubmit}>
       <h1>Log in</h1>
       <div className="flex flex-col space-y-2">
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">Username / Email</label>
         <Input
+          autoComplete="username"
           id="username"
           type="text"
           value={username}
@@ -50,6 +51,7 @@ export const LoginForm = () => {
       <div className="flex flex-col space-y-2">
         <label htmlFor="password">Password</label>
         <Input
+          autoComplete="current-password"
           id="password"
           type="password"
           value={password}
@@ -57,6 +59,14 @@ export const LoginForm = () => {
         />
       </div>
       <Submit busy={loginMutation.isLoading}>Submit</Submit>
+      <p>
+        <Link
+          className="underline text-gray-400"
+          to={ROUTES.PASSWORD_RESET.path}
+        >
+          Forgot your password?
+        </Link>
+      </p>
       <p className="text-gray-400">
         Don’t have an account?{" "}
         <Link className="underline text-gray-300" to={ROUTES.REGISTER.path}>

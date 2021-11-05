@@ -10,7 +10,6 @@ export const ConfirmRegisterForm = () => {
   const history = useHistory();
   const location = useLocation();
   const { confirmEmail, resendConfirmationCode } = useAuth();
-  // const [username, setUsername] = useState(location.state?.username);
   const [code, setCode] = useState("");
 
   const { username } = location.state || {};
@@ -19,7 +18,7 @@ export const ConfirmRegisterForm = () => {
     ["confirmEmail"],
     () => confirmEmail(username, code),
     {
-      onSuccess: (user) => {
+      onSuccess: () => {
         history.push(ROUTES.LOGIN.path);
       },
       onError: (error) => {
@@ -36,7 +35,7 @@ export const ConfirmRegisterForm = () => {
   const handleResend = async () => {
     try {
       await resendConfirmationCode(username);
-      toast.success("A new code has been sent to your email");
+      toast.success("A verification code was sent to your email address");
     } catch (err) {
       toast.error("error resending code: ", err);
     }
@@ -47,12 +46,14 @@ export const ConfirmRegisterForm = () => {
       <h1>Confirm your email</h1>
       <div className="flex flex-col space-y-2">
         <label htmlFor="email">Email</label>
-        <Input id="email" type="email" disabled value={username} />
+        <Input id="email" type="email" required disabled value={username} />
       </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="code">Verification code</label>
         <Input
           id="code"
+          required
+          autoComplete="one-time-code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />

@@ -9,8 +9,20 @@ import { useMutation } from "react-query";
 export const LoginForm = () => {
   const history = useHistory();
   const { login } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setpPassword] = useState("");
+
+  const [formState, setFormState] = useState({
+    username: "",
+    password: "",
+  });
+
+  const { username, password } = formState;
+
+  const handleFormChange = (e) => {
+    setFormState({
+      ...formState,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   const loginMutation = useMutation(
     ["logIn"],
@@ -43,9 +55,10 @@ export const LoginForm = () => {
         <Input
           autoComplete="username"
           id="username"
+          name="username"
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <div className="flex flex-col space-y-2">
@@ -55,7 +68,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           value={password}
-          onChange={(e) => setpPassword(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <Submit busy={loginMutation.isLoading}>Submit</Submit>

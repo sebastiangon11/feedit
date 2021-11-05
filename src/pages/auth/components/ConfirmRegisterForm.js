@@ -10,9 +10,17 @@ export const ConfirmRegisterForm = () => {
   const history = useHistory();
   const location = useLocation();
   const { confirmEmail, resendConfirmationCode } = useAuth();
-  const [code, setCode] = useState("");
 
-  const { username } = location.state || {};
+  const [formState, setFormState] = useState({
+    username: location.state?.username,
+    code: "",
+  });
+
+  const { code, username } = formState;
+
+  const handleFormChange = (e) => {
+    setFormState({ ...formState, [e.target.id]: e.target.value });
+  };
 
   const confirmMutation = useMutation(
     ["confirmEmail"],
@@ -55,7 +63,7 @@ export const ConfirmRegisterForm = () => {
           required
           autoComplete="one-time-code"
           value={code}
-          onChange={(e) => setCode(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <button className="underline" onClick={handleResend}>

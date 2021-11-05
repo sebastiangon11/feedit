@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { Auth as AuthRouter } from "@pages";
-import { AuthProvider, Auth } from "@contexts/auth";
+import { AuthProvider } from "@contexts/auth";
 
 import { ROUTES } from "router/routes";
 import { Nav, AnimatedRoute, AnimatedRoutes } from "./router";
@@ -20,9 +20,7 @@ function App() {
           <Nav />
           <AnimatedRoutes>
             <AnimatedRoute path={ROUTES.FEED.path}>Feed</AnimatedRoute>
-            <Auth.Unauthenticated>
-              <AuthRouter />
-            </Auth.Unauthenticated>
+            <AuthRouter />
           </AnimatedRoutes>
         </BrowserRouter>
         <ToastContainer

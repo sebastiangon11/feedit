@@ -9,10 +9,19 @@ import { useMutation } from "react-query";
 export const RegisterForm = () => {
   const history = useHistory();
   const { register } = useAuth();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const [formState, setFormState] = useState({
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const { username, email, password, passwordConfirm } = formState;
+
+  const handleFormChange = (e) => {
+    setFormState({ ...formState, [e.target.id]: e.target.value });
+  };
 
   const registerMutation = useMutation(
     ["register"],
@@ -49,7 +58,7 @@ export const RegisterForm = () => {
           id="username"
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <div className="flex flex-col space-y-2">
@@ -60,7 +69,7 @@ export const RegisterForm = () => {
           type="email"
           autoComplete="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <div className="flex flex-col space-y-2">
@@ -71,17 +80,17 @@ export const RegisterForm = () => {
           type="password"
           autoComplete="new-password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <div className="flex flex-col space-y-2">
-        <label htmlFor="password-confirm">Confirm password</label>
+        <label htmlFor="passwordConfirm">Confirm password</label>
         <Input
-          id="password-confirm"
+          id="passwordConfirm"
           type="password"
           autoComplete="new-password"
           value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
+          onChange={handleFormChange}
         />
       </div>
       <Submit busy={registerMutation.isLoading}>Submit</Submit>

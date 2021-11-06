@@ -1,9 +1,8 @@
 import { Auth } from "contexts/auth";
 import { Logout } from "pages/auth/components";
 import { Route, NavLink } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import "./Router.css";
 import { ROUTES } from "./routes";
 
 export const Nav = () => {
@@ -36,12 +35,23 @@ export const AnimatedRoute = ({ children, ...props }) => {
     <Route {...props}>
       {({ match }) => (
         <CSSTransition
-          in={match != null}
-          timeout={300}
-          classNames="page"
+          appear
           unmountOnExit
+          timeout={300}
+          in={match !== null}
+          className="absolute w-full"
+          classNames={{
+            enter: "opacity-0 scale-90",
+            appear: "opacity-0 scale-90",
+            appearActive:
+              "opacity-100 scale-100 transition-all transition-slower ease-out",
+            enterActive:
+              "opacity-100 scale-100 transition-all transition-slower",
+            exitActive:
+              "opacity-0 scale-90 transition-all transition-slower ease-in",
+          }}
         >
-          {children ? <div className="page">{children}</div> : null}
+          {children ? <div id={props.path}>{children}</div> : null}
         </CSSTransition>
       )}
     </Route>
@@ -49,5 +59,5 @@ export const AnimatedRoute = ({ children, ...props }) => {
 };
 
 export const AnimatedRoutes = ({ children }) => (
-  <div className="relative">{children}</div>
+  <TransitionGroup className="relative">{children}</TransitionGroup>
 );

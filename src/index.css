@@ -26,3 +26,98 @@ button {
 input:focus-visible {
   outline: none;
 }
+
+@variants responsive {
+  .origin-center {
+    transform-origin: center;
+  }
+  .origin-top {
+    transform-origin: top;
+  }
+  .origin-right {
+    transform-origin: right;
+  }
+  .origin-bottom {
+    transform-origin: bottom;
+  }
+  .origin-left {
+    transform-origin: left;
+  }
+  .origin-top-right {
+    transform-origin: top right;
+  }
+  .origin-bottom-right {
+    transform-origin: bottom right;
+  }
+  .origin-top-left {
+    transform-origin: top left;
+  }
+  .origin-bottom-left {
+    transform-origin: bottom left;
+  }
+
+  .transition-color {
+    transition-property: color, background-color;
+  }
+  .transition-opacity {
+    transform-property: opacity;
+  }
+  .transition-transform {
+    transform-property: transform;
+  }
+  .transition-all {
+    transition-property: all;
+  }
+
+  .transition-fastest {
+    transition-duration: 50ms;
+  }
+  .transition-faster {
+    transition-duration: 100ms;
+  }
+  .transition-fast {
+    transition-duration: 150ms;
+  }
+  .transition-medium {
+    transition-duration: 200ms;
+  }
+  .transition-slow {
+    transition-duration: 250ms;
+  }
+  .transition-slower {
+    transition-duration: 300ms;
+  }
+  .transition-slowest {
+    transition-duration: 500ms;
+  }
+
+  .ease-in {
+    transition-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  }
+  .ease-out {
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .ease-in-out {
+    transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  /* Por qué si si saco esto no anda la transición */
+  .scale-0 {
+    transform: scale(0);
+  }
+  .scale-25 {
+    transform: scale(0.25);
+  }
+  .scale-50 {
+    transform: scale(0.5);
+  }
+  .scale-75 {
+    transform: scale(0.75);
+  }
+  .scale-90 {
+    transform: scale(0.9);
+  }
+  .scale-100 {
+    transform: scale(1);
+  }
+}

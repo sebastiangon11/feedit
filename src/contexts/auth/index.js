@@ -24,7 +24,10 @@ const useAuth = () => {
 
 const Authenticated = ({ children }) => {
   const { user } = useAuth();
-  return user ? children : null;
+
+  if (!user) return null;
+
+  return typeof children === "function" ? children(user) : children;
 };
 const Unauthenticated = ({ children }) => {
   const { user } = useAuth();

@@ -19,4 +19,8 @@ export const ROUTES = {
     path: "/password/reset",
     name: "Reset your password",
   },
+  PROFILE: {
+    path: "/user/profile",
+    name: "My Profile",
+  },
 };

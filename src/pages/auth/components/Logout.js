@@ -1,30 +1,26 @@
 import { useAuth } from "@contexts/auth";
+import { IconButton } from "components/IconButton";
+import { DoorOutIcon } from "components/icons/DoorOut";
+import { toast } from "react-toastify";
 
 export const Logout = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
       await logout();
     } catch (error) {
-      console.log("error signing out: ", error);
+      toast.error(error.message);
     }
   };
 
   return (
-    <div className="flex items-center	">
-      <img
-        src={user.attributes.picture}
-        className="w-10 h-10 rounded-full shadow"
-        alt={user.username}
-      />
-      <button
-        onClick={handleLogout}
-        className="p-2 active:bg-gray-900 active:top-px active:ring-indigo-900 active:ring-2 underline"
-        type="submit"
-      >
-        Log out
-      </button>
-    </div>
+    <IconButton
+      onClick={handleLogout}
+      className="flex items-center m-4"
+      icon={<DoorOutIcon className="w-6 h-6 fill-current text-gray-100" />}
+    >
+      Log out
+    </IconButton>
   );
 };

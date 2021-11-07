@@ -19,15 +19,16 @@ function App() {
         <BrowserRouter>
           <Nav />
           <AnimatedRoutes>
-            <AnimatedRoute path={ROUTES.FEED.path}>Feed</AnimatedRoute>
+            <AnimatedRoute path={ROUTES.FEED.path}>
+              <p className="p-4 text-xl">Feed Coming Soon...</p>
+            </AnimatedRoute>
+            <AnimatedRoute path={ROUTES.PROFILE.path}>
+              <p className="p-4 text-xl">Profile Page is under construction...</p>
+            </AnimatedRoute>
             <AuthRouter />
           </AnimatedRoutes>
         </BrowserRouter>
-        <ToastContainer
-          position="bottom-center"
-          autoClose={3000}
-          theme="dark"
-        />
+        <ToastContainer position="bottom-center" autoClose={3000} theme="dark" />
       </AuthProvider>
     </QueryClientProvider>
   );

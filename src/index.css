@@ -27,6 +27,7 @@ input:focus-visible {
   outline: none;
 }
 
+/* Transitions */
 @variants responsive {
   .origin-center {
     transform-origin: center;
@@ -100,24 +101,47 @@ input:focus-visible {
   .ease-in-out {
     transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
+  .ease-out-back {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
 
-  /* Por qué si si saco esto no anda la transición */
-  .scale-0 {
-    transform: scale(0);
-  }
-  .scale-25 {
-    transform: scale(0.25);
-  }
-  .scale-50 {
-    transform: scale(0.5);
-  }
-  .scale-75 {
-    transform: scale(0.75);
-  }
-  .scale-90 {
-    transform: scale(0.9);
-  }
-  .scale-100 {
-    transform: scale(1);
-  }
+/* 
+* Drawer Animation
+*/
+
+.drawer-animation-enter {
+  @apply transform -translate-x-full;
+}
+
+.drawer-animation-enter-active {
+  @apply origin-top-right transition-all transition-slower ease-in-out transform translate-x-0;
+}
+
+.drawer-animation-exit-active {
+  @apply origin-top-right transition-all transition-slower ease-out transform -translate-x-full;
+}
+
+/* 
+* Routes animations
+*/
+
+.route-animation-appear {
+  @apply transform scale-75 opacity-0;
+}
+
+.route-animation-appear-active {
+  @apply transition-all transition-slower ease-out transform scale-100 opacity-100;
+}
+
+.route-animation-enter {
+  @apply transform scale-75 opacity-0;
+}
+
+.route-animation-enter-active {
+  @apply transition-all transition-slower ease-out transform scale-100 opacity-100;
+}
+
+.route-animation-exit-active {
+  @apply transition-all transition-slower ease-out transform scale-75 opacity-0;
 }

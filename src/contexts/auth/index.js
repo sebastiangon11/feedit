@@ -43,7 +43,9 @@ const AuthProvider = ({ children }) => {
     const authListener = (data) => {
       switch (data.payload.event) {
         case "signIn":
-          setUser(data.payload.data);
+          const user = data.payload.data;
+          setUser(user);
+          toast.success(`Welcome ${user.username}!`);
           break;
         case "signOut":
           setUser(null);

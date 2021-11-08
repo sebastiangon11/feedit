@@ -24,23 +24,18 @@ export const LoginForm = () => {
     });
   };
 
-  const loginMutation = useMutation(
-    ["logIn"],
-    () => login(username, password),
-    {
-      onSuccess: (user) => {
-        toast.success(`Welcome ${user.username}!`);
-        history.push(ROUTES.FEED.path);
-      },
-      onError: (error) => {
-        if (error.code === "UserNotConfirmedException") {
-          history.push(ROUTES.REGISTER_CONFIRM.path, { username });
-        } else {
-          toast.error(error.message);
-        }
-      },
-    }
-  );
+  const loginMutation = useMutation(["logIn"], () => login(username, password), {
+    onSuccess: () => {
+      history.push(ROUTES.FEED.path);
+    },
+    onError: (error) => {
+      if (error.code === "UserNotConfirmedException") {
+        history.push(ROUTES.REGISTER_CONFIRM.path, { username });
+      } else {
+        toast.error(error.message);
+      }
+    },
+  });
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -73,10 +68,7 @@ export const LoginForm = () => {
       </div>
       <Submit busy={loginMutation.isLoading}>Submit</Submit>
       <p>
-        <Link
-          className="underline text-gray-400"
-          to={ROUTES.PASSWORD_RESET.path}
-        >
+        <Link className="underline text-gray-400" to={ROUTES.PASSWORD_RESET.path}>
           Forgot your password?
         </Link>
       </p>

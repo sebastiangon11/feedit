@@ -23,19 +23,15 @@ export const RegisterForm = () => {
     setFormState({ ...formState, [e.target.id]: e.target.value });
   };
 
-  const registerMutation = useMutation(
-    ["register"],
-    () => register(username, email, password),
-    {
-      onSuccess: () => {
-        toast.success("A verification code was sent to your email address");
-        history.push(ROUTES.REGISTER_CONFIRM.path, { username });
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }
-  );
+  const registerMutation = useMutation(["register"], () => register(username, email, password), {
+    onSuccess: () => {
+      toast.success("A verification code was sent to your email address");
+      history.push(ROUTES.REGISTER_CONFIRM.path, { username, password });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -63,14 +59,7 @@ export const RegisterForm = () => {
       </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="email">Email</label>
-        <Input
-          required
-          id="email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={handleFormChange}
-        />
+        <Input required id="email" type="email" autoComplete="email" value={email} onChange={handleFormChange} />
       </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="password">Password</label>

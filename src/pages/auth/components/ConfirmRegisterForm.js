@@ -9,7 +9,7 @@ import { useMutation } from "react-query";
 export const ConfirmRegisterForm = () => {
   const history = useHistory();
   const location = useLocation();
-  const { confirmEmail, resendConfirmationCode } = useAuth();
+  const { confirmEmail, resendConfirmationCode, login } = useAuth();
 
   const [formState, setFormState] = useState({
     username: location.state?.username,
@@ -17,23 +17,25 @@ export const ConfirmRegisterForm = () => {
   });
 
   const { code, username } = formState;
+  const { password } = location.state || {};
 
   const handleFormChange = (e) => {
     setFormState({ ...formState, [e.target.id]: e.target.value });
   };
 
-  const confirmMutation = useMutation(
-    ["confirmEmail"],
-    () => confirmEmail(username, code),
-    {
-      onSuccess: () => {
+  const confirmMutation = useMutation(["register", "confirm"], () => confirmEmail(username, code), {
+    onSuccess: async () => {
+      try {
+        await login(username, password);
+        history.push(ROUTES.FEED.path);
+      } catch (error) {
         history.push(ROUTES.LOGIN.path);
-      },
-      onError: (error) => {
-        toast.error("error confirming sign up", error);
-      },
-    }
-  );
+      }
+    },
+    onError: (error) => {
+      toast.error("Error confirming sign up", error);
+    },
+  });
 
   const handleConfirm = async (e) => {
     e.preventDefault();
@@ -58,13 +60,7 @@ export const ConfirmRegisterForm = () => {
       </div>
       <div className="flex flex-col space-y-2">
         <label htmlFor="code">Verification code</label>
-        <Input
-          id="code"
-          required
-          autoComplete="one-time-code"
-          value={code}
-          onChange={handleFormChange}
-        />
+        <Input id="code" required autoComplete="one-time-code" value={code} onChange={handleFormChange} />
       </div>
       <button className="underline" onClick={handleResend}>
         Resend confirmation code

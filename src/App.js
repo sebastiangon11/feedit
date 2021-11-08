@@ -8,7 +8,7 @@ import { Auth as AuthRouter } from "@pages";
 import { AuthProvider } from "@contexts/auth";
 
 import { ROUTES } from "router/routes";
-import { Nav, AnimatedRoute, AnimatedRoutes } from "./router";
+import { Menu, TransitionRoute, RoutesContainer } from "./router";
 
 const queryClient = new QueryClient();
 
@@ -17,16 +17,16 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <BrowserRouter>
-          <Nav />
-          <AnimatedRoutes>
-            <AnimatedRoute path={ROUTES.FEED.path}>
+          <Menu />
+          <RoutesContainer>
+            <TransitionRoute path={ROUTES.FEED.path}>
               <p className="p-4 text-xl">Feed Coming Soon...</p>
-            </AnimatedRoute>
-            <AnimatedRoute path={ROUTES.PROFILE.path}>
+            </TransitionRoute>
+            <TransitionRoute path={ROUTES.PROFILE.path}>
               <p className="p-4 text-xl">Profile Page is under construction...</p>
-            </AnimatedRoute>
+            </TransitionRoute>
             <AuthRouter />
-          </AnimatedRoutes>
+          </RoutesContainer>
         </BrowserRouter>
         <ToastContainer position="bottom-center" autoClose={3000} theme="dark" />
       </AuthProvider>

@@ -20,6 +20,10 @@ h1 {
   @apply text-2xl;
 }
 
+h2 {
+  @apply text-xl;
+}
+
 button {
   -webkit-tap-highlight-color: transparent; /* for removing the highlight */
 }

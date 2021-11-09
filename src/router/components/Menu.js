@@ -49,7 +49,7 @@ export const Menu = () => {
               <Auth.Authenticated>
                 {(user) => (
                   <div className="m-4 flex items-center space-x-4">
-                    {user.attributes.picture___ ? (
+                    {user.attributes.picture ? (
                       <img
                         src={user.attributes.picture}
                         alt={user.username}

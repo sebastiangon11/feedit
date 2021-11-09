@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useAuth } from "@contexts/auth";
 import { Form, Input, Submit } from "./Form";
@@ -7,8 +7,11 @@ import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 
 export const LoginForm = () => {
+  const location = useLocation();
   const history = useHistory();
   const { login } = useAuth();
+
+  const { pathname } = location.state?.from || { pathname: ROUTES.FEED.path };
 
   const [formState, setFormState] = useState({
     username: "",
@@ -26,7 +29,7 @@ export const LoginForm = () => {
 
   const loginMutation = useMutation(["logIn"], () => login(username, password), {
     onSuccess: () => {
-      history.push(ROUTES.FEED.path);
+      history.push(pathname);
     },
     onError: (error) => {
       if (error.code === "UserNotConfirmedException") {

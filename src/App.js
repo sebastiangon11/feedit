@@ -8,7 +8,9 @@ import { Auth as AuthRouter } from "@pages";
 import { AuthProvider } from "@contexts/auth";
 
 import { ROUTES } from "router/routes";
-import { Menu, TransitionRoute, RoutesContainer } from "./router";
+import { Menu, TransitionRoute, RoutesContainer, CustomRoute } from "./router";
+import { ProfilePage } from "@pages/profile";
+import { FeedPage } from "@pages/feed";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +22,11 @@ function App() {
           <Menu />
           <RoutesContainer>
             <TransitionRoute path={ROUTES.FEED.path}>
-              <p className="p-4 text-xl">Feed Coming Soon...</p>
+              <FeedPage />
             </TransitionRoute>
-            <TransitionRoute path={ROUTES.PROFILE.path}>
-              <p className="p-4 text-xl">Profile Page is under construction...</p>
-            </TransitionRoute>
+            <CustomRoute path={ROUTES.PROFILE.path} transition auth>
+              <ProfilePage />
+            </CustomRoute>
             <AuthRouter />
           </RoutesContainer>
         </BrowserRouter>

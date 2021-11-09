@@ -1,29 +1,24 @@
-import { TransitionRoute, RoutesContainer } from "router";
-import { Auth as AuthContext } from "@contexts/auth";
+import { CustomRoute, RoutesContainer } from "router";
 import { LoginForm, RegisterForm, ConfirmRegisterForm, PasswordReset, PasswordChange } from "./components";
 
 export const Auth = () => {
   return (
     <RoutesContainer>
-      <AuthContext.Unauthenticated>
-        <TransitionRoute exact path="/register/confirm">
-          <ConfirmRegisterForm />
-        </TransitionRoute>
-        <TransitionRoute exact path="/register">
-          <RegisterForm />
-        </TransitionRoute>
-        <TransitionRoute path="/login">
-          <LoginForm />
-        </TransitionRoute>
-        <TransitionRoute path="/password/reset">
-          <PasswordReset />
-        </TransitionRoute>
-      </AuthContext.Unauthenticated>
-      <AuthContext.Authenticated>
-        <TransitionRoute path="/password/change">
-          <PasswordChange />
-        </TransitionRoute>
-      </AuthContext.Authenticated>
+      <CustomRoute transition exact path="/register/confirm">
+        <ConfirmRegisterForm />
+      </CustomRoute>
+      <CustomRoute transition exact path="/register">
+        <RegisterForm />
+      </CustomRoute>
+      <CustomRoute transition path="/login">
+        <LoginForm />
+      </CustomRoute>
+      <CustomRoute transition path="/password/reset">
+        <PasswordReset />
+      </CustomRoute>
+      <CustomRoute transition auth path="/password/change">
+        <PasswordChange />
+      </CustomRoute>
     </RoutesContainer>
   );
 };
